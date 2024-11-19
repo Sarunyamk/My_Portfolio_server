@@ -2,6 +2,7 @@ const nodemailer = require('nodemailer');
 require('dotenv').config();
 
 const sendEmailByNodemailer = async (email, name, subject, message) => {
+
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         host: 'smtp.gmail.com',
@@ -12,7 +13,7 @@ const sendEmailByNodemailer = async (email, name, subject, message) => {
     });
 
     const mailOptions = {
-        from: email,
+        from: process.env.EMAIL_ADMIN,
         to: process.env.EMAIL_ADMIN,
         subject: subject,
         html: `
@@ -27,18 +28,14 @@ const sendEmailByNodemailer = async (email, name, subject, message) => {
         subject: 'Thank you for your message',
         html: `
                 <div>
-                  <p><strong>Hi Im Sarunya Vajapattana </strong></p>
+                  <p><strong>Hi I'm Sarunya Vajapattana </strong></p>
                   <p><strong>Thank you for reaching out to us through our portfolio website!</strong></p>
                   <p>We appreciate your interest and will get back to you as soon as possible.</p>
                   <p>Meanwhile, please find our resume attached file.</p>
                   <p>Looking forward to collaborating with you!</p>
-                </div>`,
-        attachments: [
-            {
-                filename: 'Resume.png',
-                path: '../Resume.png',
-            },
-        ],
+                  <img src="https://res.cloudinary.com/mnksarunya/image/upload/w_400/v1731987143/dwr9pdaeufsphgmqydby.png" 
+                        style="max-width: 50%; height: auto;">                  
+                </div>`
     };
     try {
         await transporter.sendMail(mailOptions);
@@ -58,13 +55,12 @@ exports.sendEmail = async (req, res) => {
         if (!email || !name || !subject || !message) {
             return res.status(400).json({ message: 'Please provide all required fields' });
         }
-
         const responseEmail = await sendEmailByNodemailer(email, name, subject, message);
-
-        console.log('responseEmail :>> ', responseEmail);
 
         res.status(200).json({ message: "Email sent successfully" });
     } catch (error) {
         res.status(500).json({ message: 'Internal Server Error', error });
     }
 };
+
+
