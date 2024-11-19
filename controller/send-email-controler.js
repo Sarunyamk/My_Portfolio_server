@@ -1,9 +1,9 @@
 const nodemailer = require('nodemailer');
 require('dotenv').config();
+const createError = require("../util/createError")
 
-const sendEmailByNodemailer = async (email, name, subject, message) => {
-
-    const transporter = nodemailer.createTransport({
+const createTransporter = () => {
+    return nodemailer.createTransport({
         service: 'gmail',
         host: 'smtp.gmail.com',
         auth: {
@@ -11,6 +11,11 @@ const sendEmailByNodemailer = async (email, name, subject, message) => {
             pass: process.env.EMAIL_PASS,
         },
     });
+};
+
+const sendEmailByNodemailer = async (email, name, subject, message) => {
+
+    const transporter = createTransporter();
 
     const mailOptions = {
         from: process.env.EMAIL_ADMIN,
@@ -22,7 +27,19 @@ const sendEmailByNodemailer = async (email, name, subject, message) => {
        <p><strong>Name : </strong>${name}</p>
        <p><strong>Detail : </strong>${message}</p>`,
     };
-    const thankYouTransporter = {
+
+    try {
+        await transporter.sendMail(mailOptions);
+        return { success: true };
+    } catch (error) {
+        return { success: false, error };
+    }
+};
+const sendThankYouEmail = async (email) => {
+
+    const transporter = createTransporter();
+
+    const thankYouOptions = {
         from: process.env.EMAIL_ADMIN,
         to: email,
         subject: 'Thank you for your message',
@@ -38,28 +55,35 @@ const sendEmailByNodemailer = async (email, name, subject, message) => {
                 </div>`
     };
     try {
-        await transporter.sendMail(mailOptions);
-        await transporter.sendMail(thankYouTransporter);
-        return { success: true, message: 'Email sent successfully' };
+        await transporter.sendMail(thankYouOptions);
+        return { success: true };
     } catch (error) {
-        return { success: false, message: 'Failed to send email', error };
+        return { success: false, error };
     }
 };
 
 
-exports.sendEmail = async (req, res) => {
+exports.sendEmail = async (req, res, next) => {
 
     try {
 
         const { email, name, subject, message } = req.body;
+
         if (!email || !name || !subject || !message) {
-            return res.status(400).json({ message: 'Please provide all required fields' });
+            return createError(400, "Please fill in all the required fields.");
         }
         const responseEmail = await sendEmailByNodemailer(email, name, subject, message);
 
-        res.status(200).json({ message: "Email sent successfully" });
+        if (!responseEmail) {
+            return createError(500, "Failed to send email");
+        }
+        const replyEmail = await sendThankYouEmail(email);
+        if (!replyEmail) {
+            return createError(500, "Failed to reply email");
+        }
+        res.json({ message: 'Email sent successfully' });
     } catch (error) {
-        res.status(500).json({ message: 'Internal Server Error', error });
+        next(error);
     }
 };
 

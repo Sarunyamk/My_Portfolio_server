@@ -6,7 +6,10 @@ const cors = require("cors");
 const bodyParser = require('body-parser');
 const app = express();
 
+const handleError = require("./middlewares/error")
+const notFound = require("./middlewares/not-found");
 const emailRoute = require("./route/send-email-route");
+
 
 app.use(express.json());
 app.use(cors({
@@ -17,4 +20,7 @@ app.use(cors({
 app.use(bodyParser.json());
 app.use("/send-email", emailRoute);
 
-app.listen(3001, () => console.log("Listening on port 3001"));
+app.use(handleError);
+app.use('*', notFound);
+
+app.listen(process.env.PORT, () => console.log("Listening on port 3001"));
