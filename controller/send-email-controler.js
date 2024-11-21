@@ -50,7 +50,7 @@ const sendThankYouEmail = async (email) => {
                   <p>We appreciate your interest and will get back to you as soon as possible.</p>
                   <p>Meanwhile, please find our resume attached file.</p>
                   <p>Looking forward to collaborating with you!</p>
-                  <img src="https://res.cloudinary.com/mnksarunya/image/upload/w_400/v1731987143/dwr9pdaeufsphgmqydby.png" 
+                  <img src="https://res.cloudinary.com/mnksarunya/image/upload/w_400/v1732200866/us0ibtfulp6ruk6botcc.png" 
                         style="max-width: 50%; height: auto;">                  
                 </div>`
     };
