@@ -48,7 +48,7 @@ const sendThankYouEmail = async (email) => {
                   <p><strong>Hi I'm Sarunya Vajapattana </strong></p>
                   <p><strong>Thank you for reaching out to us through our portfolio website!</strong></p>
                   <p>We appreciate your interest and will get back to you as soon as possible.</p>
-                  <p>Meanwhile, please find our resume attached file.</p>
+                  <p>Meanwhile, please find my resume.</p>
                   <p>Looking forward to collaborating with you!</p>
                   <img src="https://res.cloudinary.com/mnksarunya/image/upload/w_400/v1732200866/us0ibtfulp6ruk6botcc.png" 
                         style="max-width: 50%; height: auto;">                  
@@ -56,7 +56,6 @@ const sendThankYouEmail = async (email) => {
     };
     try {
         await transporter.sendMail(thankYouOptions);
-        console.log('transporter :>> ', transporter);
         return { success: true };
     } catch (error) {
         return { success: false, error };

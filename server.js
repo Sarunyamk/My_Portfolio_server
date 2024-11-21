@@ -7,7 +7,7 @@ const bodyParser = require('body-parser');
 const app = express();
 
 const handleError = require("./middlewares/error")
-const notFound = require("./middlewares/not-found");
+const notFound = require("./middlewares/notFound");
 const emailRoute = require("./route/send-email-route");
 
 
