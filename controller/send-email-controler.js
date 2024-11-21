@@ -56,6 +56,7 @@ const sendThankYouEmail = async (email) => {
     };
     try {
         await transporter.sendMail(thankYouOptions);
+        console.log('transporter :>> ', transporter);
         return { success: true };
     } catch (error) {
         return { success: false, error };
