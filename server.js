@@ -23,4 +23,4 @@ app.use("/send-email", emailRoute);
 app.use(handleError);
 app.use('*', notFound);
 
-app.listen(process.env.PORT, () => console.log("Listening on port 3001"));
+app.listen(process.env.PORT, () => console.log(`Listening on port ${process.env.PORT}`));
