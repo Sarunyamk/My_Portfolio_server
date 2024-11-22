@@ -13,7 +13,7 @@ const emailRoute = require("./route/send-email-route");
 
 app.use(express.json());
 app.use(cors({
-    origin: 'http://localhost:5174',
+    origin: process.env.ORIGIN,
     methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE'],
     credentials: true,
 }));
