@@ -49,10 +49,14 @@ const sendThankYouEmail = async (email) => {
                   <p><strong>Thank you for reaching out to us through our portfolio website!</strong></p>
                   <p>We appreciate your interest and will get back to you as soon as possible.</p>
                   <p>Meanwhile, please find my resume.</p>
-                  <p>Looking forward to collaborating with you!</p>
-                  <img src="https://res.cloudinary.com/mnksarunya/image/upload/w_400/v1732261941/cjbwqyzttqb0d1wuvtfb.png" 
-                        style="max-width: 50%; height: auto;">                  
-                </div>`
+                  <p>Looking forward to collaborating with you!</p>          
+                </div>`,
+        attachments: [
+            {
+                filename: 'resume.png',
+                path: 'https://res.cloudinary.com/mnksarunya/image/upload/v1732261941/cjbwqyzttqb0d1wuvtfb.png',
+            }
+        ]
     };
     try {
         await transporter.sendMail(thankYouOptions);
@@ -73,18 +77,27 @@ exports.sendEmail = async (req, res, next) => {
             return createError(400, "Please fill in all the required fields.");
         }
         const responseEmail = await sendEmailByNodemailer(email, name, subject, message);
-
         if (!responseEmail) {
             return createError(500, "Failed to send email");
         }
-        const replyEmail = await sendThankYouEmail(email);
-        if (!replyEmail) {
-            return createError(500, "Failed to reply email");
-        }
+
         res.json({ message: 'Email sent successfully' });
+
     } catch (error) {
         next(error);
     }
 };
 
+exports.sendBackEmail = async (req, res, next) => {
 
+    try {
+        const replyEmail = await sendThankYouEmail(email);
+
+        if (!replyEmail) {
+            return createError(500, "Failed to reply email");
+        }
+        res.json({ message: 'Reply email successfully' });
+    } catch (error) {
+        next(error);
+    }
+};
