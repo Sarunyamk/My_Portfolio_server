@@ -91,6 +91,11 @@ exports.sendEmail = async (req, res, next) => {
 exports.sendBackEmail = async (req, res, next) => {
 
     try {
+
+        const { email } = req.body;
+        if (!email) {
+            return createError(400, "Email is required for sending a thank you email.");
+        }
         const replyEmail = await sendThankYouEmail(email);
 
         if (!replyEmail) {
