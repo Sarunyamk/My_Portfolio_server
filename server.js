@@ -18,8 +18,7 @@ app.use(cors({
     credentials: true,
 }));
 app.use(bodyParser.json());
-app.use("/send-email", emailRoute.sendEmail);
-app.use("/reply-email", emailRoute.sendBackEmail);
+app.use("/send-email", emailRoute);
 
 app.use(handleError);
 app.use('*', notFound);
