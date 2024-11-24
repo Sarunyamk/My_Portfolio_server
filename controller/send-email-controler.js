@@ -50,6 +50,7 @@ const sendThankYouEmail = async (email) => {
                   <p>We appreciate your interest and will get back to you as soon as possible.</p>
                   <p>Meanwhile, please find my resume.</p>
                   <p>Looking forward to collaborating with you!</p>          
+                  <p>Contact me : 0909654440</p>          
                 </div>`,
         attachments: [
             {
